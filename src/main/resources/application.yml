@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: paradox
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8080
+
+
+jwt:
+  secret: "mY5tr0nG@nd$3cureJWTs3cr3tKey1234567890!@#"
+  access-token-expiration-ms: 3600000
+  refresh-token-expiration-ms: 86400000
