@@ -8,11 +8,13 @@ import kz.amixady.paradox.user.persistence.entities.User;
 import kz.amixady.paradox.user.persistence.repo.UserRepository;
 import kz.amixady.paradox.user.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserProfileServiceImpl implements UserProfileService {
 
     private final UserRepository userRepository;
@@ -21,8 +23,13 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserResponse findByUsername(String username) {
+        log.info("Запрос на поиск пользователя с username='{}'", username);
+
         var user =
                 findUserByUsernameOrThrow(username);
+
+        log.debug("Пользователь найден: {}", user);
+
         return userApiMapper
                 .toResponse(user);
     }
@@ -42,6 +49,8 @@ public class UserProfileServiceImpl implements UserProfileService {
 
         var savedUser =
                 userRepository.save(user);
+        log.info("Профиль пользователя '{}' успешно обновлен", username);
+
 
         return userApiMapper.toResponse(savedUser);
     }
@@ -54,7 +63,11 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     private User findUserByUsernameOrThrow(String username){
+        log.debug("Поиск пользователя по username='{}'", username);
         return userRepository.findByUsername(username)
-                .orElseThrow(()-> new UserNotFoundException(username));
+                .orElseThrow(() -> {
+                    log.warn("Пользователь с username='{}' не найден", username);
+                    return new UserNotFoundException(username);
+                });
     }
 }

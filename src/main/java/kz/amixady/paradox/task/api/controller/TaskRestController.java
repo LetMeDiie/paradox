@@ -9,6 +9,7 @@ import kz.amixady.paradox.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class TaskRestController {
     private final TaskService tasksService;
 
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<TaskResponse> findTaskById(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("taskId") UUID taskId
@@ -34,6 +36,7 @@ public class TaskRestController {
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<TaskResponse> updateTask(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("taskId") UUID taskId,
@@ -47,6 +50,7 @@ public class TaskRestController {
 
 
     @DeleteMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> deleteTask(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("taskId") UUID taskId){

@@ -1,0 +1,28 @@
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: paradox_pg
+    environment:
+      POSTGRES_USER: amixady
+      POSTGRES_PASSWORD: amixady
+      POSTGRES_DB: paradox_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+
+  paradox:
+    image: paradox/paradox:0.0.2-SNAPSHOT
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/paradox_db
+      SPRING_DATASOURCE_USERNAME: amixady
+      SPRING_DATASOURCE_PASSWORD: amixady
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:

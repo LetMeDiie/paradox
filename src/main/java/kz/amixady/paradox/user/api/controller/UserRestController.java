@@ -27,7 +27,6 @@ public class UserRestController {
 
 
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<UserResponse> getCurrentUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
         var userResponse = userProfileService.findByUsername(userDetails.getUsername());
         return ResponseEntity.ok(userResponse);
@@ -35,7 +34,6 @@ public class UserRestController {
 
 
     @PutMapping
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<UserResponse> updateCurrentUser(
             @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody UserUpdateRequest request) {
@@ -45,7 +43,6 @@ public class UserRestController {
 
 
     @DeleteMapping
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> deleteCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
         userProfileService.deleteUser(userDetails.getUsername());
         return ResponseEntity.noContent().build();
@@ -53,7 +50,6 @@ public class UserRestController {
 
 
     @PostMapping("/password")
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> changeCurrentUserPassword(
             @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody ChangePasswordRequest request) {

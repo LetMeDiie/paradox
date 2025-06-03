@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
                 userApiMapper.toEntity(request);
 
         var userRole =
-                roleService.findByRoleName(RoleName.ROLE_USER);
+                roleService.findByRoleName(RoleName.ROLE_ADMIN);
         user.setRoles(Set.of(userRole));
 
         var savedUser =

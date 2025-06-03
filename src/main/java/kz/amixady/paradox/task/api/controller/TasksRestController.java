@@ -10,6 +10,7 @@ import kz.amixady.paradox.task.service.TasksService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,8 @@ public class TasksRestController {
 
 
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
+
     public ResponseEntity<TaskResponse> createTask(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestBody TaskDetailsCreateRequest request){
@@ -37,6 +40,7 @@ public class TasksRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<TaskResponse>> findAll(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ){
@@ -48,6 +52,7 @@ public class TasksRestController {
     }
 
     @PostMapping("/search")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<TaskResponse>> search(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestBody TaskSearchRequest request){
